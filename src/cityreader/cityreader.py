@@ -1,7 +1,15 @@
 # Create a class to hold a city location. Call the class "City". It should have
 # fields for name, lat and lon (representing latitude and longitude).
+import csv
 
-
+class City:
+  def __init__(self, name, lat, lon):
+    self.name = name
+    self.lat = lat
+    self.lon = lon
+  
+  def __str__(self):
+    return f'City({self.name}, {self.lat}, {self.lon})'
 # We have a collection of US cities with population over 750,000 stored in the
 # file "cities.csv". (CSV stands for "comma-separated values".)
 #
@@ -21,14 +29,17 @@ def cityreader(cities=[]):
   # Ensure that the lat and lon valuse are all floats
   # For each city record, create a new City instance and add it to the 
   # `cities` list
-    
-    return cities
+    with open('c:/Users/Isaiah/LambdaSchoolWork/lambda-cs/Sprint-Challenge--Intro-Python/src/cityreader/cities.csv', newline='') as csv_file:
+      csv_reader = csv.DictReader(csv_file)
+      for row in csv_reader:
+          cities.append(City(f'"{row["city"]}"', row["lat"], row["lng"]))
 
+      return cities
 cityreader(cities)
 
 # Print the list of cities (name, lat, lon), 1 record per line.
 for c in cities:
-    print(c)
+    print(c.name, c.lat, c.lon)
 
 # STRETCH GOAL!
 #
@@ -64,6 +75,12 @@ for c in cities:
 def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
   # within will hold the cities that fall within the specified region
   within = []
+  for city in cities:
+    if city.lat < lat1 or lat2:
+      if city.lat > lat1 or lat2:
+        if city.lon < lon1 or lon2:
+          if city.lon > lon1 or lon2:
+            within.append(city)
   
   # Go through each city and check to see if it falls within 
   # the specified coordinates.
